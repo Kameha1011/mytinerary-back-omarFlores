@@ -1,4 +1,4 @@
-import { Schema, Types } from "mongoose";
+import { Schema, Types, model } from "mongoose";
 
 const collection = "cities";
 
@@ -19,6 +19,6 @@ const citySchema = new Schema({
 	timestamps: true
 });
 
-const City = mongoose.model(collection, citySchema);
+const City = model(collection, citySchema);
 
 export default City
