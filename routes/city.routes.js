@@ -7,4 +7,7 @@ router.route("/")
 .get(cityControllers.getCities)
 .post(cityControllers.createCity);
 
+router.route("/:id")
+.put(cityControllers.updateCity)
+
 export default router

@@ -24,7 +24,19 @@ const controllers = {
         .status(500);
     }
   },
-  updateCity: (req, res) => {},
+  updateCity: async (req, res) => {
+    try {
+      const updatedCity = await City.findByIdAndUpdate(req.params.id, req.body, { new: true });
+      if(!updatedCity) return res.status(404).json({ message: "city not found" });
+      res.json({ message: "city updated", city: updatedCity }).status(201);
+    } catch (error) {
+      res
+        .json({
+          message: error.message || 'error updating city',
+        })
+        .status(500);
+    }
+  },
   deleteCity: (req, res) => {},
 };
 
