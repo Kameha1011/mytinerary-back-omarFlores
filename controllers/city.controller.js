@@ -12,6 +12,16 @@ const controllers = {
         .status(500);
     }
   },
+  getCityById: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const city = await City.findById(id);
+      if(!city) return res.status(404).json({ message: "city not found" });
+      res.json(city).status(200);
+    } catch (error) {
+      
+    }
+  },
   createCity: async (req, res) => {
     try {
       await City.create(req.body);
