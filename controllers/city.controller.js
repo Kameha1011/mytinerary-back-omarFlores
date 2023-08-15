@@ -3,11 +3,12 @@ const controllers = {
   getCities: async (req, res) => {
     try {
       const cities = await City.find();
+      if (!cities) return res.status(404).json({ message: "cities not found" });
       res.json(cities).status(200);
     } catch (error) {
       res
         .json({
-          message: error.message,
+          message: error.message || "error getting cities",
         })
         .status(500);
     }
@@ -16,10 +17,10 @@ const controllers = {
     try {
       const id = req.params.id;
       const city = await City.findById(id);
-      if(!city) return res.status(404).json({ message: "city not found" });
+      if (!city) return res.status(404).json({ message: "city not found" });
       res.json(city).status(200);
     } catch (error) {
-      
+      res.json({ message: error.message || "error getting city" }).status(500);
     }
   },
   createCity: async (req, res) => {
@@ -29,20 +30,25 @@ const controllers = {
     } catch (error) {
       res
         .json({
-          message: error.message,
+          message: error.message || "error creating city",
         })
         .status(500);
     }
   },
   updateCity: async (req, res) => {
     try {
-      const updatedCity = await City.findByIdAndUpdate(req.params.id, req.body, { new: true });
-      if(!updatedCity) return res.status(404).json({ message: "city not found" });
+      const updatedCity = await City.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true }
+      );
+      if (!updatedCity)
+        return res.status(404).json({ message: "city not found" });
       res.json({ message: "city updated", city: updatedCity }).status(201);
     } catch (error) {
       res
         .json({
-          message: error.message || 'error updating city',
+          message: error.message || "error updating city",
         })
         .status(500);
     }
@@ -54,7 +60,7 @@ const controllers = {
     } catch (error) {
       res
         .json({
-          message: error.message || 'error deleting city',
+          message: error.message || "error deleting city",
         })
         .status(500);
     }
