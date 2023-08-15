@@ -37,7 +37,18 @@ const controllers = {
         .status(500);
     }
   },
-  deleteCity: (req, res) => {},
+  deleteCity: async (req, res) => {
+    try {
+      await City.findByIdAndDelete(req.params.id);
+      res.json({ message: "city deleted" }).status(200);
+    } catch (error) {
+      res
+        .json({
+          message: error.message || 'error deleting city',
+        })
+        .status(500);
+    }
+  },
 };
 
 export default controllers;

@@ -9,5 +9,6 @@ router.route("/")
 
 router.route("/:id")
 .put(cityControllers.updateCity)
+.delete(cityControllers.deleteCity);
 
 export default router
