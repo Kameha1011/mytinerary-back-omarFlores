@@ -18,7 +18,11 @@ const citySchema = new Schema({
   continent: {
     type: String,
     required: true,
-  }
+  },
+  itineraries: [{
+    type: Types.ObjectId,
+    ref: "Itinerary"
+  }]
 },{
 	timestamps: true
 });
