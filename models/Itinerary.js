@@ -14,7 +14,6 @@ const itinerarySchema = new Schema({
     likes: {
         type: Number,
         default: 0,
-        required: true
     },
     hashtags: {
         type: [String],
