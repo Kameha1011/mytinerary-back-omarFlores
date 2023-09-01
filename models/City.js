@@ -1,32 +1,37 @@
 import { Schema, Types, model } from "mongoose";
 
-const collection = "cities";
+const collection = "City";
 
-const citySchema = new Schema({
-  name: {
-    type: String,
-    required: true,
+const citySchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    picture: {
+      type: String,
+      required: true,
+    },
+    country: {
+      type: String,
+      required: true,
+    },
+    continent: {
+      type: String,
+      required: true,
+    },
+    itineraries: [
+      {
+        type: Types.ObjectId,
+        ref: "Itinerary",
+      },
+    ],
   },
-  picture: {
-    type: String,
-    required: true,
-  },
-  country: {
-    type: String,
-    required: true,
-  },
-  continent: {
-    type: String,
-    required: true,
-  },
-  itineraries: [{
-    type: Types.ObjectId,
-    ref: "Itinerary"
-  }]
-},{
-	timestamps: true
-});
+  {
+    timestamps: true,
+  }
+);
 
 const City = model(collection, citySchema);
 
-export default City
+export default City;

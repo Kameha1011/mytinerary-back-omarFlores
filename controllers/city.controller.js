@@ -29,7 +29,10 @@ const controllers = {
   getCityById: async (req, res) => {
     try {
       const id = req.params.id;
-      const city = await City.findById(id);
+      const city = await City.findById(id).populate({
+        path: "itineraries",
+        populate: { path: "user" }
+      });
       if (!city) return res.status(404).json({ message: "city not found" });
       res.json(city).status(200);
     } catch (error) {
