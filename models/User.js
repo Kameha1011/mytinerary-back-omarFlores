@@ -19,6 +19,13 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  online: {
+    type: Boolean,
+    default: false,
+  },
+  verified_code: {
+    type: String,
+  },
   itineraries: [
     {
       type: Schema.Types.ObjectId,
