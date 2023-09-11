@@ -20,40 +20,18 @@ const controllers = {
   },
   signIn: async (req, res) => {
     try {
-      let user = await User.findOneAndUpdate(
-        { email: req.user.email },
-        { online: true },
-        { new: true }
-      );
-
-      const token = jwt.sign(
-        {
-          id: user._id,
-          email: user.email,
-          name: user.name,
-          photo: user.photo,
-        },
-        process.env.JWT_SECRET_TOKEN,
-        { expiresIn: "10h" }
-      );
-
-      user.password = null;
-
       return res.status(200).json({
-        success: true,
         message: "Usuario logueado correctamente",
         response: {
-          token,
           user: {
-            name: user.name,
-            email: user.email,
-            photo: user.photo,
+            name: req.user.name,
+            email: req.user.email,
+            picture: req.user.picture,
           },
         },
       });
     } catch (error) {
       res.status(500).json({
-        success: false,
         message: "Error al autenticar el usuario",
       });
     }
