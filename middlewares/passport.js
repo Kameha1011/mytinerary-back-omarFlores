@@ -14,7 +14,6 @@ export default passport.use(
           "-password"
         );
         if (user) {
-          console.log(user);
           return done(null, user);
         } else {
           return done(null, false);

@@ -25,5 +25,10 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   authcontroller.signOut
 );
+router.post(
+  "/verify",
+  passport.authenticate("jwt", { session: false }),
+  authcontroller.verifyToken
+);
 
 export default router;

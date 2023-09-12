@@ -60,6 +60,22 @@ const controllers = {
       });
     }
   },
+  verifyToken: async (req, res) => {
+    const { user } = req;
+    const token = req.headers.authorization.slice(7);
+    try {
+      return res.status(200).json({
+        user: {
+          name: user.name,
+          email: user.email,
+          photo: user.photo,
+        },
+        token
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 export default controllers;
