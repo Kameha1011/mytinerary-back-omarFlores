@@ -5,7 +5,7 @@ import { validator } from "../middlewares/validator.js";
 import { accountExistsSignUp } from "../middlewares/accountExistsSignUp.js";
 import { accountExistsSignIn } from "../middlewares/accountExistsSignIn.js";
 import { passwordVerify } from "../middlewares/passwordVerify.js";
-
+import passport from "../middlewares/passport.js";
 const router = express.Router();
 
 router.post(
@@ -20,6 +20,10 @@ router.post(
   passwordVerify,
   authcontroller.signIn
 );
-router.post("/signout", authcontroller.signUp);
+router.post(
+  "/signout",
+  passport.authenticate("jwt", { session: false }),
+  authcontroller.signOut
+);
 
 export default router;
