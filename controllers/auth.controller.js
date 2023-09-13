@@ -8,8 +8,18 @@ const controllers = {
     try {
       req.body.verified_code = crypto.randomBytes(10).toString("hex");
       req.body.password = bcryptjs.hashSync(req.body.password, 10);
-      await User.create(req.body);
-      res.status(201).json({ message: "User created!" });
+      const user = await User.create(req.body);
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_TOKEN, {
+        expiresIn: 60 * 60 * 24,
+      });
+      res.status(201).json({
+        token,
+        user: {
+          name: req.user.name,
+          email: req.user.email,
+          picture: req.user.picture,
+        },
+      });
     } catch (error) {
       res
         .json({
@@ -70,7 +80,7 @@ const controllers = {
           email: user.email,
           photo: user.photo,
         },
-        token
+        token,
       });
     } catch (error) {
       next(error);

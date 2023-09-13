@@ -17,11 +17,11 @@ router.post(
 router.post(
   "/signin",
   accountExistsSignIn,
-  passwordVerify,
   authcontroller.signIn
 );
 router.post(
   "/signout",
+  accountExistsSignUp,
   passport.authenticate("jwt", { session: false }),
   authcontroller.signOut
 );

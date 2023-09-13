@@ -13,5 +13,6 @@ export const createUserSchema = Joi.object({
   name: Joi.string().min(2).max(50),
   // .regex(solo caracteres alfabeticos),
   picture: Joi.string().required().uri(),
+  country: Joi.string().required(),
   itineraries: Joi.array().items(Joi.objectId())
 });

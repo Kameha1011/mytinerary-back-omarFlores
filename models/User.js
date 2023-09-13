@@ -19,9 +19,13 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  country:{
+    type: String,
+    required: true,
+  },
   online: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   verified_code: {
     type: String,
