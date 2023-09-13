@@ -6,38 +6,33 @@ import { accountExistsSignUp } from "../middlewares/accountExistsSignUp.js";
 import { accountExistsSignIn } from "../middlewares/accountExistsSignIn.js";
 import { passwordVerify } from "../middlewares/passwordVerify.js";
 import passport from "../middlewares/passport.js";
+import { catchAsync } from "../utils/catchAsync.js";
 const router = express.Router();
 
 router.post(
   "/signup",
   validator(createUserSchema),
   accountExistsSignUp,
-  authcontroller.signUp
+  catchAsync(authcontroller.signUp)
 );
 router.post(
   "/signin",
   accountExistsSignIn,
   passwordVerify,
-  authcontroller.signIn
+  catchAsync(authcontroller.signIn)
 );
-router.post(
-  "/googleSignin",
-  authcontroller.googleSignin
-)
-router.post(
-  "/googleSignup",
-  authcontroller.googleSignup
-)
+router.post("/googleSignin", catchAsync(authcontroller.googleSignin));
+router.post("/googleSignup", catchAsync(authcontroller.googleSignup));
 router.post(
   "/signout",
   accountExistsSignUp,
   passport.authenticate("jwt", { session: false }),
-  authcontroller.signOut
+  catchAsync(authcontroller.signOut)
 );
 router.post(
   "/verify",
   passport.authenticate("jwt", { session: false }),
-  authcontroller.verifyToken
+  catchAsync(authcontroller.verifyToken)
 );
 
 export default router;

@@ -1,8 +1,10 @@
 import User from "../models/User.js";
-export const accountExistsSignUp = async (req, res, next) => {
+import { catchAsync } from "../utils/catchAsync.js";
+import ExpressError from "../utils/ExpressError.js";
+export const accountExistsSignUp = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
   if (user) {
-    return res.status(400).json({ message: "User Already Exists!" });
+    throw new ExpressError("User already exists!", 400);
   }
   req.user = {
     email: req.body.email,
@@ -11,4 +13,4 @@ export const accountExistsSignUp = async (req, res, next) => {
     password: req.body.password,
   };
   return next();
-};
+});

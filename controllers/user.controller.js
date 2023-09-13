@@ -1,39 +1,20 @@
 import User from "../models/User.js";
+import ExpressError from "../utils/ExpressError.js";
 const controller = {
   getUsers: async (req, res) => {
-    try {
-      const users = await User.find();
-      if (!users) return res.status(404).json({ message: "users not found" });
-      res.json(users).status(200);
-    } catch (error) {
-      res
-        .json({
-          message: error.message || "error getting users",
-        })
-        .status(500);
-    }
+    const users = await User.find();
+    if (!users) throw new ExpressError("users not found", 404);
+    res.json(users).status(200);
   },
   getUserById: async (req, res) => {
-    try {
-      const { id } = req.params;
-      const user = await User.findById(id);
-      if (!user) return res.status(404).json({ message: "user not found" });
-      res.json(user).status(200);
-    } catch (error) {
-      res.json({ message: error.message || "error getting user" }).status(500);
-    }
+    const { id } = req.params;
+    const user = await User.findById(id);
+    if (!user) throw new ExpressError("user not found", 404);
+    res.json(user).status(200);
   },
   createUser: async (req, res) => {
-    try {
-      await User.create(req.body);
-      res.json({ message: "user created" }).status(201);
-    } catch (error) {
-      res
-        .json({
-          message: error.message || "error creating user",
-        })
-        .status(500);
-    }
+    await User.create(req.body);
+    res.json({ message: "user created" }).status(201);
   },
 };
 

@@ -1,10 +1,14 @@
 import express from "express";
 import userController from "../controllers/user.controller.js";
+import { catchAsync } from "../utils/catchAsync.js";
 
 const router = express.Router();
 
-router.route("/").get(userController.getUsers).post(userController.createUser);
+router
+  .route("/")
+  .get(catchAsync(userController.getUsers))
+  .post(catchAsync(userController.createUser));
 
-router.route("/:id").get(userController.getUserById);
+router.route("/:id").get(catchAsync(userController.getUserById));
 
 export default router;
