@@ -2,6 +2,7 @@ import crypto from "crypto";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import { verify } from "../utils/googleVerify.js";
 
 const controllers = {
   signUp: async (req, res) => {
@@ -49,6 +50,42 @@ const controllers = {
     } catch (error) {
       res.status(500).json({
         message: "Error al autenticar el usuario",
+      });
+    }
+  },
+  googleSignin: async (req, res) => {
+    try {
+      const { token_id } = req.body;
+      const { name, email, picture } = await verify(token_id);
+      const user = await User.findOne({ email });
+      if (!user) {
+        const data = {
+          name,
+          email,
+          picture,
+          password: bcryptjs.hashSync(crypto.randomBytes(10).toString("hex"), 10),
+          google: true,
+          verified_code: crypto.randomBytes(10).toString("hex"),
+        };
+        user = await User.create(data);
+      }
+      user.online = true;
+      await user.save();
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_TOKEN, {
+        expiresIn: 60 * 60 * 24,
+      });
+      return res.status(200).json({
+        message: "User signed in",
+        user: {
+          name: name,
+          email: email,
+          picture: picture,
+        },
+        token
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Error al autenticar el usuario"
       });
     }
   },

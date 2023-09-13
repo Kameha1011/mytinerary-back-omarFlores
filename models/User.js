@@ -21,7 +21,11 @@ const userSchema = new Schema({
   },
   country:{
     type: String,
-    required: true,
+    required: false,
+  },
+  google: {
+    type: Boolean,
+    default: false,
   },
   online: {
     type: Boolean,

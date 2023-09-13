@@ -17,8 +17,13 @@ router.post(
 router.post(
   "/signin",
   accountExistsSignIn,
+  passwordVerify,
   authcontroller.signIn
 );
+router.post(
+  "/google",
+  authcontroller.googleSignin
+)
 router.post(
   "/signout",
   accountExistsSignUp,
