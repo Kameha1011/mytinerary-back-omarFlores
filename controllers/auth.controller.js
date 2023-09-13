@@ -63,7 +63,10 @@ const controllers = {
           name,
           email,
           picture,
-          password: bcryptjs.hashSync(crypto.randomBytes(10).toString("hex"), 10),
+          password: bcryptjs.hashSync(
+            crypto.randomBytes(10).toString("hex"),
+            10
+          ),
           google: true,
           verified_code: crypto.randomBytes(10).toString("hex"),
         };
@@ -81,11 +84,54 @@ const controllers = {
           email: email,
           picture: picture,
         },
-        token
+        token,
       });
     } catch (error) {
       res.status(500).json({
-        message: "Error al autenticar el usuario"
+        message: "Error al autenticar el usuario",
+      });
+    }
+  },
+  googleSignup: async (req, res) => {
+    try {
+      const { token_id } = req.body;
+      const { name, email, picture } = await verify(token_id);
+      const user = await User.findOne({ email });
+      if (!user) {
+        const data = {
+          name,
+          email,
+          picture,
+          password: bcryptjs.hashSync(
+            crypto.randomBytes(10).toString("hex"),
+            10
+          ),
+          google: true,
+          verified_code: crypto.randomBytes(10).toString("hex"),
+        };
+        const newUser = await User.create(data);
+        newUser.online = true;
+        await newUser.save();
+        const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET_TOKEN, {
+          expiresIn: 60 * 60 * 24,
+        });
+        return res.status(200).json({
+          message: "User signed in",
+          user: {
+            name: name,
+            email: email,
+            picture: picture,
+          },
+          token,
+        });
+      }
+      return res.status(409).json({
+        message: "User already exists",
+      })
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: "Error al autenticar el usuario",
       });
     }
   },

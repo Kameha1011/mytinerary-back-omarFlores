@@ -21,8 +21,12 @@ router.post(
   authcontroller.signIn
 );
 router.post(
-  "/google",
+  "/googleSignin",
   authcontroller.googleSignin
+)
+router.post(
+  "/googleSignup",
+  authcontroller.googleSignup
 )
 router.post(
   "/signout",
