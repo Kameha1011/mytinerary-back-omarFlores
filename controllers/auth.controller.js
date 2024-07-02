@@ -43,7 +43,7 @@ const controllers = {
   googleSignin: async (req, res) => {
     const { token_id } = req.body;
     const { name, email, picture } = await verify(token_id);
-    const user = await User.findOne({ email });
+    let user = await User.findOne({ email });
     if (!user) {
       const data = {
         name,
