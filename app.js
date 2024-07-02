@@ -10,7 +10,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const ORIGIN =
   process.env.NODE_ENV === "production"
-    ? "https://mytinerary-back-omarflores.vercel.app"
+    ? "https://mytinerary-omar-flores.vercel.app"
     : "http://localhost:5173";
 const corsOptions = {
   origin: ORIGIN,
